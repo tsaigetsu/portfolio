@@ -1,20 +1,53 @@
 @import url('./reset.css');
 
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: linear-gradient(to bottom,
+      #00E5FF 0%,
+      #7D75E8 59%,
+      #FF00D0 100%);
+  background-size: 100% 200%;
+  background-position: 0 0;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #1E1E1E;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+  transition: background-color 0.2s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #333;
+}
+
+body {
+  scroll-behavior: smooth;
+}
+
 .header {
-    background-color: #D7DDE0;
-    box-shadow: 0px 6px 40px rgba(0, 0, 0, 0.2);
-    height: 80px;
-    box-shadow: 0 6px 40px rgba(0,0,0,0.2);
-    position: relative;
-    z-index: 2;
+  background-color: #D7DDE0;
+  box-shadow: 0px 6px 40px rgba(0, 0, 0, 0.2);
+  height: 80px;
+  box-shadow: 0 6px 40px rgba(0, 0, 0, 0.2);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
 }
 
 .wrapper {
   display: flex;
   flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-    padding: 26px 420px;
+  justify-content: space-between;
+  width: 100%;
+  padding: 26px 420px;
 }
 
 .logo {
@@ -26,12 +59,10 @@
 
 .logo-text {
   display: flex;
-    background: linear-gradient(
-    to right,
-    #00E5FF 0%,
-    #7D75E8 59%,
-    #FF00D0 100%
-  );
+  background: linear-gradient(to right,
+      #00E5FF 0%,
+      #7D75E8 59%,
+      #FF00D0 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -54,14 +85,40 @@
   align-items: center;
 }
 
+.nav-btn {
+  position: relative;
+  padding-bottom: 6px;
+  transition: color 0.3s;
+  color: #505050;
+  cursor: pointer;
+}
+
+.nav-btn:hover {
+  color: #1E1E1E;
+}
+
+.nav-btn.active {
+  background: #1e1e1e;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.nav-indicator {
+  position: absolute;
+  bottom: 0;
+  height: 3px;
+  background: #1E1E1E;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
 .contact-btn {
-  background: linear-gradient(
-    to right,
-    #00E5FF 0%,
-    #7D75E8 59%,
-    #FF00D0 100%
-  );
-  color: #fff; /* белый текст */
+  background: linear-gradient(to right,
+      #00E5FF 0%,
+      #7D75E8 59%,
+      #FF00D0 100%);
+  color: #fff;
   font-family: 'Montserrat', sans-serif;
   font-size: 18px;
   font-weight: 600;
@@ -70,17 +127,18 @@
   border-radius: 14px;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 2px 2px 10px rgba(0,0,0,0.25);
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.25);
 }
 
-/* Hover эффект */
-.contact-btn:hover, .contact-btn:focus {
+.contact-btn:hover,
+.contact-btn:focus {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
 .main {
   background-color: #D7DDE0;
+  margin-top: 80px;
 }
 
 .main-wrapper {
@@ -131,11 +189,11 @@
   border-radius: 14px;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 2px 2px 10px rgba(0,0,0,0.25);
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.25);
 }
 
-/* Hover эффект */
-.more-btn:hover, .more-btn:focus {
+.more-btn:hover,
+.more-btn:focus {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
@@ -144,6 +202,65 @@
   width: 425px;
   height: 496px;
   object-fit: cover;
-  border: 1px solid #000;
   border-radius: 24px;
+  box-shadow: -6px 10px 40px rgba(0, 0, 0, 0.25);
+}
+
+.about-section {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 0;
+}
+
+/* Вертикальная линия по центру */
+.about-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  background: #1E1E1E;
+  transform: translateX(-50%);
+  margin-top: 20px;
+}
+
+/* Общий стиль для блоков */
+.about-left,
+.about-right {
+  width: 40%;
+  /* чтобы не упиралось */
+  margin-bottom: 60px;
+  position: relative;
+}
+
+/* Левый блок */
+.about-left {
+  text-align: right;
+  margin-left: calc(4% + 80px);
+}
+
+/* Правый блок */
+.about-right {
+  text-align: left;
+  margin-left: calc(50% + 80px);
+}
+
+.second-heading-about {
+  font-size: 34px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  color: #1E1E1E;
+  width: 386px;
+  line-height: 1.25;
+}
+
+.paragraf-about {
+  width: 386px;
+  color: #505050;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
 }
