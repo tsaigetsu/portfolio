@@ -12,8 +12,8 @@ export default function Header() {
           <a className="nav-btn">PORTFOLIO</a>
           <a className="nav-btn">ABOUT</a>
         </nav>
+        <ContactBtn />
       </div>
-      <ContactBtn />
     </header>
   );
 }
