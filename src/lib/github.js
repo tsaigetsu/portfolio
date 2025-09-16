@@ -1,7 +1,5 @@
 // utils/getPinnedRepos.js
-import fetch from "node-fetch";
-
-const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN; // теперь Vite понимает
+const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
 const USERNAME = import.meta.env.VITE_GITHUB_USER;
 
 export async function getPinnedRepos() {
