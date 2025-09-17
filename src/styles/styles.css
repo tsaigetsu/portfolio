@@ -219,7 +219,6 @@ body {
   padding: 60px 0 0 0;
 }
 
-/* Вертикальная линия по центру */
 .about-section::before {
   content: "";
   position: absolute;
@@ -229,25 +228,21 @@ body {
   width: 2px;
   background: #1E1E1E;
   transform: translateX(-50%);
-  margin: 20px 0 20px;
+  margin: 20px 0 -68px 0;
 }
 
-/* Общий стиль для блоков */
 .about-left,
 .about-right {
   width: 40%;
-  /* чтобы не упиралось */
   margin-bottom: 67px;
   position: relative;
 }
 
-/* Левый блок */
 .about-left {
   text-align: right;
   margin-left: calc(4% + 80px);
 }
 
-/* Правый блок */
 .about-right {
   text-align: left;
   margin-left: calc(50% + 80px);
@@ -273,31 +268,46 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px; /* Отступ между сеткой карточек и кнопкой */
-  padding: 50px 20px;
-  background-color: #d7dde0; /* Светло-серый фон как на изображении */
+  gap: 20px;
+  background-color: #d7dde0;
 }
 
 .portfolio-wrapper {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  column-gap: 244px;
-  row-gap: 75px;
-  gap: 20px; /* Отступ между карточками */
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 75px;
   width: 100%;
-  max-width: 1280px; /* Ограничиваем максимальную ширину для десктопов */
+  max-width: 1280px;
 }
 
-.portfolio-wrapper .card:nth-child(even) {
-  margin-top: 350px; 
+.portfolio-wrapper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  background: #1E1E1E;
+  transform: translateX(-50%);
+  z-index: 0;
+}
+
+
+.card {
+  z-index: 1; 
 }
 
 .card {
   position: relative;
-  width: 370px;
-  height: 408px;
-  border-radius: 24px; /* Закругляем углы у самой карточки */
-  overflow: hidden; /* Обрезаем всё, что выходит за пределы закругления */
+  width: 1080px;
+  height: 480px;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
 }
 
 .card-image {
@@ -311,13 +321,10 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 1080px;
+  height: 160px;
   background: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  transform: translateY(100%);
-  transition: transform 0.5s ease;
+  transition: transform 1s ease;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -325,18 +332,72 @@ body {
   padding: 20px;
   color: #fff;
   text-align: center;
-  border-radius: 24px; /* Закругляем и оверлей, чтобы он соответствовал карточке */
+  border-radius: 24px;
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  transform: translateY(300%);
+  transition: transform 2s ease, backdrop-filter 1s ease 1s;
 }
 
-.card:hover .card-image {
+/* .card:hover .card-image {
   transform: scale(1.1);
 }
 
 .card:hover .card-overlay {
-  transform: translateY(0);
-}
+  transform: translateY(200%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+} */
 
 .card-name,
 .card-paragraf {
   margin-bottom: 10px;
+}
+
+.load-btn {
+  background-color: transparent;
+  border: 1px solid #505050;
+  color: #505050;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 2px 18px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.25);
+  margin-top: 75px;
+}
+
+.load-btn:hover,
+.load-btn:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.animated-card {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.animated-card.loaded {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.card.fade-in {
+  opacity: 1;
+  transform: translateY(0);
 }

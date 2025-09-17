@@ -1,19 +1,29 @@
 import { useState } from "react";
+import { useEffect, useRef } from 'react';
 
-export default function RepoCard({ name, description, url, openGraphImageUrl }) {
+export default function RepoCard({ name, description, websiteUrl, openGraphImageUrl }) {
+  const cardRef = useRef(null);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (cardRef.current) {
+        cardRef.current.classList.add('fade-in');
+      }
+    }, 100);
+
+  }, []);
 
   return (
     <div
       className="card"
+      ref={cardRef}
     >
-      {/* Фон */}
       <img
         src={openGraphImageUrl || "https://via.placeholder.com/250x250?text=No+Image"}
         alt={name || "No name"}
         className="card-image"
       />
 
-      {/* Оверлей */}
       <div
         className="card-overlay"
       >
@@ -24,7 +34,7 @@ export default function RepoCard({ name, description, url, openGraphImageUrl }) 
           {description || "No description available"}
         </p>
         <a
-          href={url || "#"}
+          href={websiteUrl || "#"}
           target="_blank"
           rel="noopener noreferrer"
           className="card-link"

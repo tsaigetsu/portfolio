@@ -26,22 +26,6 @@ export default function Main() {
           <img className="main-image" alt="Photo of mine" src={avatar}></img>
         </div>
       </div>
-      {/* <section className="about-section" id="about-section">
-            </section> */}
-      {/* <section className="features">
-                <div className="feature left">
-                    <h3>Gracefully</h3>
-                    <p>Minimalism is my thing, but not the limit</p>
-                    <img src="..." alt="">
-                    <img src="..." alt="">
-                </div>
-                <div className="feature right">
-                    <h3>FAST</h3>
-                    <p>Landing in 2 business days</p>
-                    <img src="..." alt="">
-                    <img src="..." alt="">
-                </div>
-            </section> */}
       <About/>
       <Portfolio/>
     </main>
