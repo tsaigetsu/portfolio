@@ -268,8 +268,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
   background-color: #d7dde0;
+  padding: 0 0 75px;
 }
 
 .portfolio-wrapper {
@@ -282,6 +282,7 @@ body {
   gap: 75px;
   width: 100%;
   max-width: 1280px;
+  padding: 50px 0;
 }
 
 .portfolio-wrapper::before {
@@ -366,7 +367,6 @@ body {
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.25);
-  margin-top: 75px;
 }
 
 .load-btn:hover,
@@ -401,3 +401,57 @@ body {
   opacity: 1;
   transform: translateY(0);
 }
+
+.futures {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 400px;
+  background-color: #505050;
+  height: 310px;
+}
+
+.futures-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: start;
+  width: 100%;
+  max-width: 1280px;
+  padding: 50px 0;
+  gap: 22px;
+}
+
+.second-heading {
+  font-size: 34px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  color: #fff;
+  width: 386px;
+  line-height: 1.25;
+  display: inline;
+}
+
+.paragraf-futures {
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+}
+
+.futures-list {
+  display: flex;
+  flex-direction: row;
+  gap: 22px;
+}
+
+.paragraf-li {
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+}
+

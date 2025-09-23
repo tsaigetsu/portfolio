@@ -3,6 +3,7 @@ import MoreBtn from "./MoreBtn";
 import About from "./About";
 import Portfolio from "./Portfolio";
 import avatar from "../../public/img/me.jpg";
+import Style from "./Style";
 
 export default function Main() {
   return (
@@ -28,6 +29,7 @@ export default function Main() {
       </div>
       <About/>
       <Portfolio/>
+      <Style/>
     </main>
   );
 }
