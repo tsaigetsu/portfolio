@@ -36,7 +36,7 @@ export default function Portfolio() {
   };
 
   return (
-    <section className="portfolio-section">
+    <section className="portfolio-section" id="portfolio">
       <div className="portfolio-wrapper">
         {transitions((style, repo) => (
           <animated.div style={style}>

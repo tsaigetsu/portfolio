@@ -7,7 +7,7 @@ import Style from "./Style";
 
 export default function Main() {
   return (
-    <main className="main">
+    <main className="main" id="home">
       <div className="main-wrapper">
         <div className="text-wrapper">
           <h1 className="main-heading">

@@ -122,6 +122,8 @@ body {
       #FF00D0 100%);
   color: #fff;
   font-family: 'Montserrat', sans-serif;
+  display: flex;
+  align-items: center;
   font-size: 18px;
   font-weight: 600;
   padding: 2px 18px;

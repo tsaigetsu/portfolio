@@ -5,7 +5,7 @@ export default function Header() {
   const [active, setActive] = useState("HOME");
   const [indicatorStyle, setIndicatorStyle] = useState({});
   const navRefs = useRef({});
-  const navItems = ["HOME", "PORTFOLIO", "ABOUT"];
+  const navItems = ["HOME", "ABOUT", "PORTFOLIO"];
 
   useEffect(() => {
     const el = navRefs.current[active];
@@ -27,15 +27,24 @@ export default function Header() {
           {navItems.map((item) => (
             <a
               key={item}
+              href={`#${item.toLowerCase()}`}
               ref={(el) => (navRefs.current[item] = el)}
               className={`nav-btn ${active === item ? "active" : ""}`}
-              onClick={() => setActive(item)}
+              onClick={(e) => {
+                e.preventDefault();
+                
+                setActive(item);
+
+                const targetElement = document.getElementById(item.toLowerCase());
+                if (targetElement) {
+                  targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
             >
               {item}
             </a>
           ))}
 
-          {/* Индикатор */}
           <span className="nav-indicator" style={indicatorStyle} />
         </nav>
         {/* <nav className="navigation">

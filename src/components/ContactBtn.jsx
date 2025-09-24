@@ -1,3 +1,18 @@
+import React from 'react';
+
 export default function ContactBtn() {
-  return <button className="contact-btn">CONTACT</button>;
+  const handleContactClick = () => {
+    const footer = document.getElementById('footer');
+    if (footer) {
+      footer.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    window.location.href = 'mailto:vstremetskyi@gmail.com?subject=Partnership%20Proposal';
+  };
+
+  return (
+    <button className="contact-btn" onClick={handleContactClick}>
+      CONTACT
+    </button>
+  );
 }

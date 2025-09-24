@@ -1,6 +1,6 @@
 export default function About(){
     return(
-        <section className="about-section" id="about-section">
+        <section className="about-section" id="about">
         <div className="about-wrapper">
           <div className="about-right">
             <h2 className="second-heading-about">FAST</h2>
