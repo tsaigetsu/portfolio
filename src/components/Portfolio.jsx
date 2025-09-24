@@ -6,6 +6,9 @@ import { useTransition, animated } from "@react-spring/web";
 export default function Portfolio() {
   const [repos, setRepos] = useState([]);
   const [visibleCount, setVisibleCount] = useState(4);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isContentLoaded, setIsContentLoaded] = useState(false);
+  const sectionClass = `portfolio-section ${visibleCount === 4 ? 'initial-padding' : ''}`;
 
   useEffect(() => {
     async function fetchRepos() {
@@ -15,6 +18,11 @@ export default function Portfolio() {
       } catch (error) {
         console.error("Failed to fetch repositories:", error);
         setRepos([]);
+      } finally {
+        setIsLoading(false);
+        setTimeout(() => {
+          setIsContentLoaded(true);
+        }, 500);
       }
     }
     fetchRepos();
@@ -36,19 +44,25 @@ export default function Portfolio() {
   };
 
   return (
-    <section className="portfolio-section" id="portfolio">
-      <div className="portfolio-wrapper">
-        {transitions((style, repo) => (
-          <animated.div style={style}>
-            <RepoCard
-              key={repo.name}
-              name={repo.name}
-              websiteUrl={repo.homepageUrl}
-              url={repo.url}
-              openGraphImageUrl={repo.openGraphImageUrl}
-            />
-          </animated.div>
-        ))}
+    <section className={sectionClass} id="portfolio">
+      <div className={`portfolio-wrapper ${isContentLoaded ? 'loaded-content' : ''}`}>
+        {isLoading ? (
+          Array.from({ length: 4 }).map((_, index) => (
+            <div key={index} className="skeleton-card"></div>
+          ))
+        ) : (
+          transitions((style, repo) => (
+            <animated.div style={style}>
+              <RepoCard
+                key={repo.name}
+                name={repo.name}
+                websiteUrl={repo.homepageUrl}
+                url={repo.url}
+                openGraphImageUrl={repo.openGraphImageUrl}
+              />
+            </animated.div>
+          ))
+        )}
       </div>
 
       {visibleCount < repos.length && (
