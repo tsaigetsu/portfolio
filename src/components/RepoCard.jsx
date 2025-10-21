@@ -1,4 +1,3 @@
-  import { useState } from "react";
   import { useEffect, useRef } from 'react';
 
   export default function RepoCard({ name, description, websiteUrl, openGraphImageUrl }) {
@@ -6,13 +5,13 @@
     
 
     useEffect(() => {
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         if (cardRef.current) {
           cardRef.current.classList.add('fade-in');
-
         }
       }, 100);
-
+  
+      return () => clearTimeout(timer);
     }, []);
 
     return (

@@ -8,9 +8,15 @@ export async function getStarredRepos() {
         starredRepositories(first: 8, orderBy: {field: STARRED_AT, direction: DESC}) {
           nodes {
             name
+            description
             homepageUrl
             url
             openGraphImageUrl
+            object(expression: "HEAD:README.md") {
+              ... on Blob {
+                text
+              }
+            }
           }
         }
       }
@@ -34,12 +40,15 @@ export async function getStarredRepos() {
       return [];
     }
 
-    if (!data.data || !data.data.viewer || !data.data.viewer.starredRepositories) {
-      console.error("Unexpected API response structure:", data);
-      return [];
-    }
+    const repos = data.data?.viewer?.starredRepositories?.nodes || [];
+    return repos.map(repo => ({
+      name: repo.name,
+      description: repo.object ? repo.object.text : repo.description,
+      homepageUrl: repo.homepageUrl,
+      url: repo.url,
+      openGraphImageUrl: repo.openGraphImageUrl,
+    }));
     
-    return data.data.viewer.starredRepositories.nodes;
   } catch (error) {
     console.error("Failed to fetch GitHub data:", error);
     return [];

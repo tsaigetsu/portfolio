@@ -21,7 +21,7 @@ export default function Header() {
     <header className="header">
       <div className="wrapper">
         <div className="logo">
-          <h2 className="logo-text">LCC</h2>
+          <a href='../main.jsx' className="logo-text">LCC</a>
         </div>
         <nav className="navigation" style={{ position: "relative" }}>
           {navItems.map((item) => (
