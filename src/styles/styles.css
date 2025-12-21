@@ -6,16 +6,15 @@
 
 ::-webkit-scrollbar-track {
   background: linear-gradient(to bottom,
-      #00E5FF 0%,
-      #7D75E8 59%,
-      #FF00D0 100%);
+      rgb(0, 229, 255) 0%,
+      rgb(125, 117, 232) 59%,
+      rgb(255, 0, 208) 100%);
   background-size: 100% 200%;
   background-position: 0 0;
-  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #1E1E1E;
+  background-color: #D7DDE0;
   border-radius: 10px;
   border: 2px solid transparent;
   background-clip: content-box;
@@ -28,6 +27,7 @@
 
 body {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 .header {
@@ -47,7 +47,7 @@ body {
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
-  padding: 26px 420px;
+  padding: 26px 20%;
 }
 
 .logo {
@@ -87,8 +87,7 @@ body {
 }
 
 .nav-btn {
-  position: relative;
-  padding-bottom: 6px;
+
   transition: color 0.3s;
   color: #505050;
   cursor: pointer;
@@ -106,12 +105,17 @@ body {
 }
 
 .nav-indicator {
+  /* positioned absolutely relative to .navigation so it is removed from document flow
+     JS sets inline `left` and `width` on this element (see Header.jsx) */
   position: absolute;
-  bottom: 0;
+  bottom: -6px;
+  left: 0;
   height: 3px;
   background: #1E1E1E;
   border-radius: 2px;
-  transition: all 0.3s ease;
+  transition: left 0.3s ease, width 0.3s ease, background 0.2s ease;
+  pointer-events: none;
+  will-change: left, width;
 }
 
 .contact-btn {
@@ -163,7 +167,7 @@ body {
 }
 
 .main-paragraf {
-  width: 386px;
+  max-width: 386px;
   color: #505050;
   font-family: 'Montserrat', sans-serif;
   font-weight: 400;
@@ -175,6 +179,7 @@ body {
   flex-direction: column;
   gap: 22px;
   justify-content: center;
+  width: 40%;
 }
 
 .btn-wrapper {
@@ -203,14 +208,33 @@ body {
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
+/* CheckIt button: same visuals as .more-btn but separate name for independent edits */
+.checkit-btn {
+  background-color: transparent;
+  color: #505050;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 2px 18px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.25);
+}
+
+.card:hover .checkit-btn,
+.card:focus-within .checkit-btn {
+  box-shadow: 0 6px 20px rgba(255, 0, 208, .1);
+}
+
 .img-wrapper {
-  width: 425px;
-  height: 496px;
+  width: 50%;
+  height: 50%;
 }
 
 .main-image {
-  width: 425px;
-  height: 496px;
+  width: 400px;
+  height: 470px;
   object-fit: cover;
   border-radius: 24px;
   box-shadow: -6px 10px 40px rgba(0, 0, 0, 0.25);
@@ -263,7 +287,7 @@ body {
 }
 
 .paragraf-about {
-  width: 386px;
+  max-width: 386px;
   font-family: 'Montserrat', sans-serif;
   font-weight: 400;
   font-size: 14px;
@@ -320,51 +344,70 @@ body {
   height: 480px;
   border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.25);
 }
 
 .skeleton-card {
   width: 1080px;
   height: 480px;
+  background: #d7dde0; /* match page background so skeleton covers pseudo-elements */
+  border-radius: 24px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+  z-index: 2; /* ensure it sits above pseudo elements (which use z-index:0) */
+  overflow: hidden;
 }
 
+.card {
+  position: relative;
+  width: 1080px;
+  height: 480px;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Static 70/30 split: image on top (70%), overlay on bottom (30%) */
 .card-image {
   width: 100%;
-  height: 100%;
+  height: 70%;
   object-fit: cover;
   transition: transform 0.5s ease;
+  display: block;
 }
 
 .card-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 1080px;
-  height: 160px;
-  background: rgba(0, 0, 0, 0.2);
-  transition: transform 1s ease;
+  position: relative;
+  top: auto;
+  left: auto;
+  width: 100%;
+  height: 30%;
+  background: #d7dde0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 20px;
-  color: #fff;
+  padding: 18px 24px;
+  color: #1E1E1E;
   text-align: center;
-  border-radius: 24px;
-  backdrop-filter: blur(0px);
-  -webkit-backdrop-filter: blur(0px);
-  transform: translateY(300%);
-  transition: transform 2s ease, backdrop-filter 1s ease 1s;
+  border-radius: 0 0 24px 24px;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transform: none;
 }
 
-.card:hover .card-image {
-  transform: scale(1.1);
-}
+/* Re-enable image zoom on hover (zoom-in) */
+.card:hover .card-image { transform: scale(1.1); }
 
-.card:hover .card-overlay {
-  transform: translateY(200%);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+/* Keep overlay static (no slide/blur on hover) */
+.card:hover .card-overlay { backdrop-filter: none; }
+
+/* Ensure card is rendered statically (override any fade-in rules) */
+.card, .card.fade-in, .animated-card, .animated-card.loaded {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
 }
 
 .card-name,
@@ -535,7 +578,7 @@ body {
   padding: 0 0 75px;
 }
 
-@media (max-width: 1199px) {
+/* @media (max-width: 1199px) {
   .header {
     background-color: #D7DDE0;
     height: 60px;
@@ -550,11 +593,6 @@ body {
     align-items: center;
   }
 
-.wrapper {
-  justify-content: space-around;
-  padding: 14px 150px;
-  align-items: center;
-}
 
 
 .logo-text {
@@ -602,7 +640,7 @@ body {
 }
 
 .main-paragraf {
-  width: 374px;
+  max-width: 374px;
   font-weight: 400;
   font-size: 20px;
 }
@@ -617,12 +655,18 @@ body {
 .btn-wrapper {
   display: flex;
   flex-direction: row;
-  gap: 100px;
+  gap: 25%;
 }
 
 .more-btn {
   font-size: 20px;
   font-weight: 700; 
+}
+
+/* Responsive variant for checkit button */
+.checkit-btn {
+  font-size: 20px;
+  font-weight: 700;
 }
 
 .img-wrapper {
@@ -685,7 +729,7 @@ body {
 }
 
 .paragraf-about {
-  width: 386px;
+  max-width: 386px;
   font-family: 'Montserrat', sans-serif;
   font-weight: 400;
   font-size: 14px;
@@ -957,4 +1001,65 @@ body {
   padding: 0 0 75px;
 }
 
+/* Responsive breakpoints
+   - 0 - 599px:    mobile
+   - 600 - 1023px: small tablet / large phone
+   - 1024 - 1439px: tablet / small laptop
+   - 1440px+:      large desktop
+*/
+
+/* 0 - 599px: mobile */
+@media (max-width: 599px) {
+  .wrapper { padding: 14px 20px; }
+  .main-wrapper { padding: 24px 20px; flex-direction: column; gap: 24px; }
+  .main-heading { font-size: 28px; width: 100%; }
+  .main-paragraf { width: 100%; font-size: 14px; }
+  .portfolio-wrapper { padding: 30px 16px; gap: 36px; }
+
+  .card { width: 100%; height: auto; border-radius: 14px; }
+  .card-image { height: 200px; }
+  .card-overlay { height: auto; padding: 14px; border-radius: 0 0 14px 14px; }
+  .card-name { font-size: 18px; }
+  .card-paragraf { font-size: 13px; }
+
+  .more-btn, .checkit-btn { font-size: 16px; padding: 6px 12px; }
+}
+
+/* 600 - 1023px: small tablet */
+@media (min-width: 600px) and (max-width: 1023px) {
+  .wrapper { padding: 20px 80px; }
+  .main-wrapper { padding: 36px 80px; }
+  .main-heading { font-size: 32px; width: 100%; }
+
+  .card { width: 720px; height: 360px; border-radius: 18px; }
+  .card-image { height: 70%; }
+  .card-overlay { height: 30%; padding: 16px 20px; border-radius: 0 0 18px 18px; }
+  .card-name { font-size: 20px; }
+  .card-paragraf { font-size: 14px; }
+
+  .more-btn, .checkit-btn { font-size: 16px; padding: 6px 14px; }
+}
+
+/* 1024 - 1439px: tablet / small laptop */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .wrapper { padding: 26px 18%; }
+  .main-wrapper { padding: 48px 18%; }
+
+  .card { width: 960px; height: 420px; border-radius: 20px; }
+  .card-image { height: 70%; }
+  .card-overlay { height: 30%; padding: 18px 22px; border-radius: 0 0 20px 20px; }
+
+  .more-btn, .checkit-btn { font-size: 18px; padding: 8px 16px; }
+}
+
+/* 1440px and up: large desktop */
+@media (min-width: 1440px) {
+  .wrapper { padding: 26px 20%; }
+  .main-wrapper { padding: 51px 20%; }
+
+  .card { width: 1080px; height: 480px; border-radius: 24px; }
+  .card-image { height: 70%; }
+  .card-overlay { height: 30%; padding: 18px 24px; border-radius: 0 0 24px 24px; }
+
+  .more-btn, .checkit-btn { font-size: 18px;}
 }

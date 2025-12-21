@@ -1,24 +1,9 @@
-  import { useEffect, useRef } from 'react';
+  import React from 'react';
+  import CheckIt from './CheckIt';
 
   export default function RepoCard({ name, description, websiteUrl, openGraphImageUrl }) {
-    const cardRef = useRef(null);
-    
-
-    useEffect(() => {
-      const timer = setTimeout(() => {
-        if (cardRef.current) {
-          cardRef.current.classList.add('fade-in');
-        }
-      }, 100);
-  
-      return () => clearTimeout(timer);
-    }, []);
-
     return (
-      <div
-        className="card"
-        ref={cardRef}
-      >
+      <div className="card">
         <img
           src={openGraphImageUrl || "https://via.placeholder.com/250x250?text=No+Image"}
           alt={name || "No name"}
@@ -34,14 +19,7 @@
           <p className="card-paragraf">
             {description || "No description available"}
           </p>
-          <a
-            href={websiteUrl || "#"}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="card-link"
-          >
-            CHECK IT
-          </a>
+          <CheckIt text="CHECK IT" href={websiteUrl || "#"} />
         </div>
       </div>
     );

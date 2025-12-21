@@ -52,7 +52,7 @@ export default function Portfolio() {
           ))
         ) : (
           transitions((style, repo) => (
-            <animated.div style={style}>
+            <animated.div style={style} class={'card'}>
               <RepoCard
                 key={repo.name}
                 name={repo.name}

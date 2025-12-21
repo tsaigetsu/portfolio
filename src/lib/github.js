@@ -1,6 +1,12 @@
 // utils/github.js
 const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
 
+if (!GITHUB_TOKEN) {
+  console.error(
+    "VITE_GITHUB_TOKEN is not set. Create a .env file with VITE_GITHUB_TOKEN=YOUR_TOKEN and restart the dev server."
+  );
+}
+
 export async function getStarredRepos() {
   const query = `
     query {
@@ -32,6 +38,17 @@ export async function getStarredRepos() {
       },
       body: JSON.stringify({ query })
     });
+
+    if (!response.ok) {
+      const text = await response.text();
+      console.error(`GitHub API responded with ${response.status}: ${text}`);
+      if (response.status === 401) {
+        console.error(
+          "401 Unauthorized — check your VITE_GITHUB_TOKEN value and that the token has appropriate scopes."
+        );
+      }
+      return [];
+    }
 
     const data = await response.json();
 
