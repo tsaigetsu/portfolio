@@ -45,31 +45,33 @@ export default function Portfolio() {
 
   return (
     <section className={sectionClass} id="portfolio">
-      <div className={`portfolio-wrapper ${isContentLoaded ? 'loaded-content' : ''}`}>
-        {isLoading ? (
-          Array.from({ length: 4 }).map((_, index) => (
-            <div key={index} className="skeleton-card"></div>
-          ))
-        ) : (
-          transitions((style, repo) => (
-            <animated.div style={style} class={'card'}>
-              <RepoCard
-                key={repo.name}
-                name={repo.name}
-                websiteUrl={repo.homepageUrl}
-                url={repo.url}
-                openGraphImageUrl={repo.openGraphImageUrl}
-              />
-            </animated.div>
-          ))
+      <div className="portfolio-wrapper">
+        <div className={`cards-list ${isContentLoaded ? 'loaded-content' : ''}`}>
+          {isLoading ? (
+            Array.from({ length: 4 }).map((_, index) => (
+              <div key={index} className="skeleton-card"></div>
+            ))
+          ) : (
+            transitions((style, repo) => (
+              <animated.div style={style} className="card-anim-wrapper">
+                <RepoCard
+                  key={repo.name}
+                  name={repo.name}
+                  websiteUrl={repo.homepageUrl}
+                  url={repo.url}
+                  openGraphImageUrl={repo.openGraphImageUrl}
+                />
+              </animated.div>
+            ))
+          )}
+        </div>
+
+        {visibleCount < repos.length && (
+          <button className="load-btn" onClick={loadMore}>
+            LOAD MORE
+          </button>
         )}
       </div>
-
-      {visibleCount < repos.length && (
-        <button className="load-btn" onClick={loadMore}>
-          LOAD MORE
-        </button>
-      )}
     </section>
   );
 }

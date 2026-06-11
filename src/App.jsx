@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import Main from "./components/Main";
 import useScrollGradient from "./hooks/useScrollGradient";
 import Footer from "./components/Footer";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   useScrollGradient();
@@ -36,8 +37,9 @@ function App() {
   return (
     <>
       <Header></Header>
-      <Main></Main> 
+      <Main></Main>
       <Footer></Footer>
+      <ScrollToTop />
     </>
   );
 }

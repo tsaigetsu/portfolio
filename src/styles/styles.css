@@ -59,7 +59,7 @@ body {
 
 .logo-text {
   display: flex;
-  background: linear-gradient(to right,
+  background: linear-gradient(135deg,
       #00E5FF 0%,
       #7D75E8 59%,
       #FF00D0 100%);
@@ -1001,65 +1001,454 @@ body {
   padding: 0 0 75px;
 }
 
-/* Responsive breakpoints
-   - 0 - 599px:    mobile
-   - 600 - 1023px: small tablet / large phone
-   - 1024 - 1439px: tablet / small laptop
-   - 1440px+:      large desktop
+/* ===== CARD: LIQUID GLASS REDESIGN =====
+   Переопределяет все предыдущие правила карточки.
 */
 
-/* 0 - 599px: mobile */
-@media (max-width: 599px) {
-  .wrapper { padding: 14px 20px; }
-  .main-wrapper { padding: 24px 20px; flex-direction: column; gap: 24px; }
-  .main-heading { font-size: 28px; width: 100%; }
-  .main-paragraf { width: 100%; font-size: 14px; }
-  .portfolio-wrapper { padding: 30px 16px; gap: 36px; }
-
-  .card { width: 100%; height: auto; border-radius: 14px; }
-  .card-image { height: 200px; }
-  .card-overlay { height: auto; padding: 14px; border-radius: 0 0 14px 14px; }
-  .card-name { font-size: 18px; }
-  .card-paragraf { font-size: 13px; }
-
-  .more-btn, .checkit-btn { font-size: 16px; padding: 6px 12px; }
+/* Внешний враппер: нет линии, нет overflow:hidden — тени карточек видны */
+.portfolio-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  width: 100%;
+  max-width: 1280px;
+  padding: 50px 0;
+  overflow: visible;
 }
 
-/* 600 - 1023px: small tablet */
-@media (min-width: 600px) and (max-width: 1023px) {
-  .wrapper { padding: 20px 80px; }
-  .main-wrapper { padding: 36px 80px; }
-  .main-heading { font-size: 32px; width: 100%; }
+/* Убираем старый ::before с portfolio-wrapper — линия теперь на cards-list */
+.portfolio-wrapper::before,
+.portfolio-wrapper.loaded-content::before {
+  content: none;
+  display: none;
+}
 
-  .card { width: 720px; height: 360px; border-radius: 18px; }
-  .card-image { height: 70%; }
-  .card-overlay { height: 30%; padding: 16px 20px; border-radius: 0 0 18px 18px; }
-  .card-name { font-size: 20px; }
+/* Внутренний враппер с карточками: здесь живёт вертикальная линия */
+.cards-list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 75px;
+  width: 100%;
+}
+
+.cards-list::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  opacity: 0;
+  left: 50%;
+  width: 2px;
+  background: #1E1E1E;
+  transform: translateX(-50%);
+  z-index: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.cards-list.loaded-content::before {
+  opacity: 1;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Анимационная обёртка — прозрачная, задаёт ширину карточке */
+.card-anim-wrapper {
+  width: 1080px;
+}
+
+.card {
+  position: relative;
+  width: 100%;
+  height: 480px;
+  border-radius: 24px;
+  overflow: hidden;
+  display: block;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+}
+
+/* Изображение занимает всю карточку */
+.card-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+  display: block;
+}
+
+/* Liquid-glass плашка — скрыта, выезжает снизу при наведении */
+.card-overlay {
+  position: absolute;
+  top: auto;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  padding: 18px 28px 22px;
+  background: rgba(215, 221, 224, 0.42);
+  backdrop-filter: blur(16px) saturate(1.6);
+  -webkit-backdrop-filter: blur(16px) saturate(1.6);
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+  color: #1E1E1E;
+  transform: translateY(100%);
+  transition: transform 0.42s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover .card-image  { transform: scale(1.05); }
+.card:hover .card-overlay { transform: translateY(0); }
+
+/* Название карточки — градиент как у логотипа */
+.card-name {
+  background: linear-gradient(to right, #00E5FF 0%, #7D75E8 59%, #FF00D0 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 22px;
+  margin-bottom: 2px;
+}
+
+.card-paragraf {
+  color: #2a2a2a;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 6px;
+}
+
+/* Кнопка CHECK IT — стиль как у Contact */
+.checkit-btn {
+  background: linear-gradient(to right, #00E5FF 0%, #7D75E8 59%, #FF00D0 100%);
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 5px 20px;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.22);
+  text-decoration: none;
+  display: inline-block;
+}
+
+.checkit-btn:hover,
+.checkit-btn:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+}
+
+/* Skeleton placeholder */
+.skeleton-card {
+  width: 1080px;
+  height: 480px;
+  border-radius: 24px;
+  background: linear-gradient(90deg, #c8cfd2 25%, #d7dde0 50%, #c8cfd2 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.4s infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Мобильный логотип (скрыт по умолчанию, виден только на маленьких экранах) */
+.mobile-logo {
+  display: none;
+  background: linear-gradient(135deg, #00E5FF 0%, #7D75E8 59%, #FF00D0 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  text-decoration: none;
+}
+
+/* Кнопка "наверх" */
+.scroll-to-top {
+  position: fixed;
+  bottom: 32px;
+  right: 24px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00E5FF 0%, #7D75E8 59%, #FF00D0 100%);
+  color: #fff;
+  font-size: 22px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  line-height: 1;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(16px);
+  transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.2s;
+}
+
+.scroll-to-top--visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.scroll-to-top:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  transform: translateY(-3px);
+}
+
+/* ===== RESPONSIVE BREAKPOINTS =====
+   ≤ 480px        — телефон
+   481 – 768px    — большой телефон / планшет (портрет)
+   769 – 1023px   — планшет (альбом)
+   1024 – 1439px  — маленький ноутбук / планшет альбом
+   ≥ 1440px       — большой десктоп
+*/
+
+/* ── Маленький ноутбук / планшет альбом (1024–1439px) ── */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .wrapper        { padding: 26px 8%; }
+  .main-wrapper   { padding: 48px 8%; }
+
+  .card-anim-wrapper { width: min(90vw, 960px); }
+  .card,
+  .skeleton-card  { height: 420px; }
+
+  .futures        { padding: 0 8%; height: auto; min-height: 310px; }
+  .footer-section { padding: 50px 8%; }
+  .footer-wrapper { gap: 80px; }
+  .second-heading-f { width: auto; }
+}
+
+/* ── Планшет, альбомная ориентация (769–1023px) ── */
+@media (min-width: 769px) and (max-width: 1023px) {
+  /* Хедер */
+  .header        { height: 64px; }
+  .wrapper       { padding: 14px 40px; }
+  .navigation    { gap: 24px; font-size: 15px; }
+  .logo-text     { font-size: 20px; }
+  .contact-btn   { font-size: 15px; width: 110px; height: 30px; padding: 2px 12px; }
+
+  /* Главная секция */
+  .main          { margin-top: 64px; }
+  .main-wrapper  { padding: 40px 40px; flex-direction: column; gap: 32px; }
+  .text-wrapper  { width: 100%; }
+  .main-heading  { font-size: 30px; width: 100%; }
+  .main-paragraf { max-width: 100%; font-size: 16px; }
+  .img-wrapper   { width: 100%; display: flex; justify-content: center; }
+  .main-image    { width: 100%; max-width: 420px; height: auto; border-radius: 20px; }
+  .btn-wrapper   { gap: 24px; }
+
+  /* About — зигзаг адаптирован */
+  .about-left   { width: 43%; margin-left: 4%; text-align: right; padding-right: 16px; }
+  .about-right  { width: 43%; margin-left: 53%; text-align: left; padding-left: 16px; }
+  .second-heading-about { font-size: 24px; width: 100%; }
+  .paragraf-about { max-width: 100%; font-size: 13px; }
+
+  /* Портфолио */
+  .portfolio-wrapper { padding: 40px 20px; }
+  .cards-list    { gap: 60px; }
+  .card-anim-wrapper { width: 90%; }
+  .card,
+  .skeleton-card { height: 420px; }
+  .card-overlay  { padding: 16px 20px; }
+  .card-name     { font-size: 20px; }
   .card-paragraf { font-size: 14px; }
 
-  .more-btn, .checkit-btn { font-size: 16px; padding: 6px 14px; }
+  /* Секция навыков */
+  .futures          { padding: 0 40px; height: auto; min-height: 280px; }
+  .futures-wrapper  { padding: 40px 0; }
+  .second-heading   { font-size: 28px; width: 100%; }
+  .paragraf-futures { font-size: 16px; }
+  .futures-list     { flex-wrap: wrap; gap: 14px; }
+
+  /* Футер */
+  .footer-section   { padding: 40px 40px; }
+  .footer-wrapper   { flex-direction: column; gap: 36px; }
+  .contact-wrapper  { align-items: flex-start; }
+  .second-heading-f { font-size: 28px; width: 100%; text-align: left; }
+  .footer-links-wrapper { flex-direction: column; gap: 16px; align-items: flex-start; }
+  .footer-links-item { width: auto; }
 }
 
-/* 1024 - 1439px: tablet / small laptop */
-@media (min-width: 1024px) and (max-width: 1439px) {
-  .wrapper { padding: 26px 18%; }
-  .main-wrapper { padding: 48px 18%; }
+/* ── Большой телефон / планшет портрет (481–768px) ── */
+@media (min-width: 481px) and (max-width: 768px) {
+  /* Хедер */
+  .header        { height: 64px; }
+  .wrapper       { padding: 14px 24px; }
+  .navigation    { gap: 20px; font-size: 15px; }
+  .logo-text     { font-size: 20px; }
+  .contact-btn   { font-size: 14px; width: 105px; height: 32px; padding: 2px 10px; }
 
-  .card { width: 960px; height: 420px; border-radius: 20px; }
-  .card-image { height: 70%; }
-  .card-overlay { height: 30%; padding: 18px 22px; border-radius: 0 0 20px 20px; }
+  /* Главная секция */
+  .main          { margin-top: 64px; }
+  .main-wrapper  { padding: 32px 24px; flex-direction: column; gap: 28px; }
+  .text-wrapper  { width: 100%; }
+  .main-heading  { font-size: 28px; width: 100%; }
+  .main-paragraf { max-width: 100%; font-size: 15px; }
+  .img-wrapper   { width: 100%; display: flex; justify-content: center; }
+  .main-image    { width: 100%; max-width: 380px; height: auto; border-radius: 18px; }
 
-  .more-btn, .checkit-btn { font-size: 18px; padding: 8px 16px; }
+  /* Кнопки одинакового размера */
+  .btn-wrapper   { gap: 20px; align-items: center; }
+  .btn-wrapper .contact-btn,
+  .btn-wrapper .more-btn {
+    font-size: 15px;
+    padding: 8px 18px;
+    height: auto;
+    width: auto;
+  }
+
+  /* About — зигзаг адаптирован */
+  .about-left   { width: 43%; margin-left: 4%; text-align: right; padding-right: 14px; }
+  .about-right  { width: 43%; margin-left: 53%; text-align: left; padding-left: 14px; }
+  .second-heading-about { font-size: 22px; width: 100%; }
+  .paragraf-about { max-width: 100%; font-size: 13px; }
+
+  /* Портфолио — плашка всегда видна на тач-устройствах */
+  .portfolio-wrapper { padding: 32px 16px; }
+  .cards-list    { gap: 40px; }
+  .card-anim-wrapper { width: 92%; }
+  .card,
+  .skeleton-card { height: 400px; }
+  .card-overlay  {
+    height: 35%;
+    overflow: hidden;
+    transform: none;
+    transition: none;
+    padding: 14px 18px 18px;
+    background: rgba(215, 221, 224, 0.55);
+    backdrop-filter: blur(14px) saturate(1.4);
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  }
+  .card:hover .card-overlay { transform: none; }
+  .card:hover .card-image   { transform: none; }
+  .card-name     { font-size: 18px; }
+  .card-paragraf {
+    font-size: 13px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .checkit-btn   { font-size: 14px; padding: 5px 14px; }
+
+  /* Секция навыков */
+  .futures          { padding: 0 32px; height: auto; min-height: 260px; }
+  .futures-wrapper  { padding: 36px 0; }
+  .second-heading   { font-size: 26px; width: 100%; }
+  .paragraf-futures { font-size: 15px; }
+  .paragraf-li      { font-size: 15px; }
+  .futures-list     { flex-wrap: wrap; gap: 14px; }
+
+  /* Футер */
+  .footer-section   { padding: 32px 24px; }
+  .footer-wrapper   { flex-direction: column; gap: 32px; }
+  .contact-wrapper  { align-items: flex-start; }
+  .second-heading-f { font-size: 26px; width: 100%; text-align: left; }
+  .footer-links-wrapper { flex-direction: column; gap: 14px; align-items: flex-start; }
+  .footer-links-item { width: auto; }
+  .footer-links-link { font-size: 16px; }
 }
 
-/* 1440px and up: large desktop */
-@media (min-width: 1440px) {
-  .wrapper { padding: 26px 20%; }
-  .main-wrapper { padding: 51px 20%; }
+/* ── Телефон (≤ 480px) ── */
+@media (max-width: 480px) {
+  /* === Хедер: только навигация, лого уходит в герой === */
+  .header      { height: 56px; }
+  .wrapper     { padding: 14px 24px; justify-content: center; flex-wrap: nowrap; row-gap: 0; }
+  .logo        { display: none; }
+  .wrapper > .contact-btn { display: none; }
+  .navigation  { gap: 32px; font-size: 16px; order: initial; width: auto; justify-content: center; }
 
-  .card { width: 1080px; height: 480px; border-radius: 24px; }
-  .card-image { height: 70%; }
-  .card-overlay { height: 30%; padding: 18px 24px; border-radius: 0 0 24px 24px; }
+  /* === Мобильный логотип в герой-секции === */
+  .mobile-logo { display: inline-block; font-size: 52px; margin-bottom: 4px; }
 
-  .more-btn, .checkit-btn { font-size: 18px;}
+  /* === Главная секция: больше воздуха, крупнее текст === */
+  .main         { margin-top: 56px; }
+  .main-wrapper { padding: 32px 24px; flex-direction: column; gap: 28px; }
+  .text-wrapper { width: 100%; }
+  .main-heading { font-size: 30px; width: 100%; }
+  .main-paragraf { max-width: 100%; font-size: 16px; }
+  .img-wrapper  { width: 100%; display: flex; justify-content: center; padding: 0; }
+  .main-image   { width: 100%; height: auto; border-radius: 16px; }
+
+  /* Кнопки одинакового размера */
+  .btn-wrapper  { gap: 16px; align-items: center; }
+  .btn-wrapper .contact-btn,
+  .btn-wrapper .more-btn {
+    font-size: 14px;
+    padding: 8px 16px;
+    height: auto;
+    width: auto;
+  }
+
+  /* === About — зигзаг, крупнее и жирнее === */
+  .about-section { padding: 40px 0 0 0; }
+  .about-left  { width: 43%; margin-left: 4%; text-align: right; padding-right: 10px; margin-bottom: 40px; }
+  .about-right { width: 43%; margin-left: 53%; text-align: left; padding-left: 10px; margin-bottom: 40px; }
+  .second-heading-about { font-size: 20px; font-weight: 700; width: 100%; }
+  .paragraf-about { max-width: 100%; font-size: 13px; font-weight: 500; }
+
+  /* === Портфолио: ~2 карточки на экране, плашка всегда видна === */
+  .portfolio-wrapper { padding: 24px 12px; }
+  .cards-list    { gap: 32px; }
+  .card-anim-wrapper { width: 92%; }
+  .card,
+  .skeleton-card { height: 360px; }
+  .card-overlay  {
+    height: 35%;
+    overflow: hidden;
+    transform: none;
+    transition: none;
+    padding: 10px 14px 14px;
+    background: rgba(215, 221, 224, 0.62);
+    backdrop-filter: blur(12px) saturate(1.4);
+    -webkit-backdrop-filter: blur(12px) saturate(1.4);
+  }
+  .card:hover .card-overlay { transform: none; }
+  .card:hover .card-image   { transform: none; }
+  .card-name     { font-size: 15px; }
+  .card-paragraf { font-size: 11px; margin-bottom: 4px; }
+  .checkit-btn   { font-size: 12px; padding: 4px 12px; }
+  .load-btn      { font-size: 15px; padding: 6px 14px; }
+
+  /* Секция навыков */
+  .futures          { padding: 0 24px; height: auto; }
+  .futures-wrapper  { padding: 36px 0; gap: 16px; }
+  .second-heading   { font-size: 22px; width: 100%; }
+  .paragraf-futures { font-size: 14px; }
+  .paragraf-li      { font-size: 14px; }
+  .futures-list     { flex-wrap: wrap; gap: 12px; }
+
+  /* Футер */
+  .footer-section   { padding: 20px 16px; }
+  .footer-wrapper   { flex-direction: column; gap: 24px; }
+  .contact-wrapper  { align-items: flex-start; }
+  .second-heading-f { font-size: 22px; width: 100%; text-align: left; }
+  .footer-links-wrapper { flex-direction: column; gap: 12px; align-items: flex-start; }
+  .footer-links-item { width: auto; }
+  .footer-links-link { font-size: 15px; }
+  .footer-links-icon { width: 26px; height: 24px; }
+  .initial-padding  { padding: 0 0 48px; }
 }

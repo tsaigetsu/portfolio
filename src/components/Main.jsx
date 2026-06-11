@@ -11,6 +11,7 @@ export default function Main() {
       <section className="main-section" id="initial-section">
         <div className="main-wrapper">
           <div className="text-wrapper">
+            <a className="logo-text mobile-logo" href="#home">LCC</a>
             <h1 className="main-heading">
               Redefining
               <br /> the Web Design
